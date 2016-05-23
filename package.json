@@ -4,7 +4,7 @@
   "description": "Starter Angular 2 Github query",
   "main": "main.js",
   "scripts": {
-    "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" \"sass --watch .\"",
+    "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" \"sass --watch ./src/styles/styles.scss:./src/styles/styles.css\"",
     "lite": "lite-server",
     "postinstall": "typings install",
     "tsc": "tsc",

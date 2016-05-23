@@ -1,6 +1,6 @@
 <div>
     <form>
-        <input type="text" #username placeholder="Github Username" id="search_github" />
+        <input class="searchbox" type="text" #username placeholder="Github Username" id="search_github" />
         <button type="button" (click)="Search(username.value)">Search</button>
     </form>
     <div *ngIf="displayUser">
