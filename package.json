@@ -32,7 +32,7 @@
     "rxjs": "5.0.0-beta.6",
     "systemjs": "^0.19.28",
     "tether": "^1.3.2",
-    "tiny-ng-store": "file:///Users/Jakes/Projects/npm-packages/tinyngstore",
+    "tiny-ng-store": "^0.2.0",
     "zone.js": "^0.6.12"
   },
   "devDependencies": {
