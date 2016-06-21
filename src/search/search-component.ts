@@ -53,7 +53,7 @@ export class SearchComponent {
     private failStore(action: string): void {
         this.failObs
             .take(1)
-            .map((s: number) => { console.log(s); return searchCount(s, action); })
+            .map((s: number) => searchCount(s, action))
             .subscribe((num: number) => {
                 this.tinyStore.UpdateItem({ data: num, name: this.FAILSTORENAME });
             });
@@ -63,7 +63,7 @@ export class SearchComponent {
         // take latest item, apply the value function, and update the data
         this.successObs
             .take(1)
-            .map((s: number) => { console.log(s); return searchCount(s, action); })
+            .map((s: number) => searchCount(s, action))
             .subscribe((num: number) => {
                 this.tinyStore.UpdateItem({ data: num, name: this.SUCCESSSTORENAME });
             });
