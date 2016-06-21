@@ -7,7 +7,13 @@
         <a target="_blank" href="{{user.html_url}}">{{user.login}}</a>
         <img src="{{user.avatar_url}}" />
     </div>
+    <div *ngIf="!displayUser">
+        <h3>No User!</h3>
+    </div>
     <div>
-        <p>{{SearchCount | async}}</p>
+        <p>Search Count: {{SearchCount | async}}</p>
+    </div>
+    <div> 
+        <p>Failure Count: {{FailCount | async}}</p>
     </div>
 </div>

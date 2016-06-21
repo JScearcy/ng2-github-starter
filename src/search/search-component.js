@@ -35,42 +35,64 @@ System.register(['@angular/core', '@angular/http', 'tiny-ng-store/tiny-ng-store'
                     this.http = http;
                     this.tinyStore = tinyStore;
                     this.displayUser = false;
+                    this.FAILSTORENAME = 'gihubUserFail';
+                    this.SUCCESSSTORENAME = 'githubUserSuccess';
                 }
                 SearchComponent.prototype.Search = function (username) {
                     var _this = this;
                     this.http.get('https://api.github.com/users/' + username)
-                        .map(function (res) { return res.json(); })
-                        .subscribe(function (user) {
-                        _this.user = user;
+                        .subscribe(function (res) {
+                        _this.user = res.json();
                         _this.displayUser = true;
+                        _this.successStore(search_count_1.INCREMENT);
+                    }, function (err) {
+                        console.error(err);
+                        _this.displayUser = false;
+                        _this.failStore(search_count_1.INCREMENT);
                     });
-                    // any time the search is performed, increment the store data
-                    this.changeStore(search_count_1.INCREMENT);
                 };
                 Object.defineProperty(SearchComponent.prototype, "SearchCount", {
                     get: function () {
                         // the async pipe can be applied to an observable to subscribe and sync with the current value
-                        return this.storeObs;
+                        return this.successObs;
                     },
                     enumerable: true,
                     configurable: true
                 });
-                SearchComponent.prototype.changeStore = function (action) {
+                Object.defineProperty(SearchComponent.prototype, "FailCount", {
+                    get: function () {
+                        return this.failObs;
+                    },
+                    enumerable: true,
+                    configurable: true
+                });
+                SearchComponent.prototype.failStore = function (action) {
+                    var _this = this;
+                    this.failObs
+                        .take(1)
+                        .map(function (s) { console.log(s); return search_count_1.searchCount(s, action); })
+                        .subscribe(function (num) {
+                        _this.tinyStore.UpdateItem({ data: num, name: _this.FAILSTORENAME });
+                    });
+                };
+                SearchComponent.prototype.successStore = function (action) {
                     var _this = this;
                     // take latest item, apply the value function, and update the data
-                    this.storeObs
+                    this.successObs
                         .take(1)
-                        .map(function (s) { return search_count_1.searchCount(s, action); })
+                        .map(function (s) { console.log(s); return search_count_1.searchCount(s, action); })
                         .subscribe(function (num) {
-                        _this.tinyStore.UpdateItem({ data: num, name: 'githubUsers' });
+                        _this.tinyStore.UpdateItem({ data: num, name: _this.SUCCESSSTORENAME });
                     });
                 };
                 SearchComponent.prototype.ngOnInit = function () {
-                    // insert a new store item and retrieve it, returning an observable 
-                    this.tinyStore.InsertItem({ data: 0, name: 'githubUsers' });
-                    // map storeObs to automatically return the pertinent data
-                    this.storeObs =
-                        this.tinyStore.GetItem('githubUsers')
+                    this.failObs =
+                        this.tinyStore
+                            .InsertItem({ data: 0, name: this.FAILSTORENAME })
+                            .map(function (s) { return s && s.data; });
+                    this.successObs =
+                        this.tinyStore
+                            .InsertItem({ data: 0, name: this.SUCCESSSTORENAME })
                             .map(function (s) { return s && s.data; });
                 };
                 SearchComponent = __decorate([

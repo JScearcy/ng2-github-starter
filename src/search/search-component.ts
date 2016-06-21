@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Http} from '@angular/http';
+import {Http, Response} from '@angular/http';
 import {TinyNgStore, StoreItem} from 'tiny-ng-store/tiny-ng-store';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -17,43 +17,67 @@ import {searchCount, INCREMENT} from './search-count';
 export class SearchComponent {
     private user: IUser;
     private displayUser: boolean = false;
-    private storeObs: Observable<number>;
+    private successObs: Observable<number>;
+    private failObs: Observable<number>;
+    private FAILSTORENAME: string = 'gihubUserFail';
+    private SUCCESSSTORENAME: string = 'githubUserSuccess';
 
     constructor(private http: Http, private tinyStore: TinyNgStore) {
     }
 
     public Search(username: string): any {
         this.http.get('https://api.github.com/users/' + username)
-            .map((res: any) => res.json())
-            .subscribe((user: IUser) => {
-                this.user = user;
-                this.displayUser = true;
-            });
-        // any time the search is performed, increment the store data
-        this.changeStore(INCREMENT);
+            .subscribe(
+                (res: any) => {
+                    this.user = res.json();
+                    this.displayUser = true;
+                    this.successStore(INCREMENT);
+                },
+                (err: any) => {
+                    console.error(err);
+                    this.displayUser = false;
+                    this.failStore(INCREMENT);
+                }
+            );
     }
 
     get SearchCount(): Observable<number> {
         // the async pipe can be applied to an observable to subscribe and sync with the current value
-        return this.storeObs;
+        return this.successObs;
     }
 
-    private changeStore(action: string): void {
-        // take latest item, apply the value function, and update the data
-        this.storeObs
+    get FailCount(): Observable<number> {
+        return this.failObs;
+    }
+
+    private failStore(action: string): void {
+        this.failObs
             .take(1)
-            .map((s: number) => searchCount(s, action))
+            .map((s: number) => { console.log(s); return searchCount(s, action); })
             .subscribe((num: number) => {
-                this.tinyStore.UpdateItem({ data: num, name: 'githubUsers' });
+                this.tinyStore.UpdateItem({ data: num, name: this.FAILSTORENAME });
+            });
+    }
+
+    private successStore(action: string): void {
+        // take latest item, apply the value function, and update the data
+        this.successObs
+            .take(1)
+            .map((s: number) => { console.log(s); return searchCount(s, action); })
+            .subscribe((num: number) => {
+                this.tinyStore.UpdateItem({ data: num, name: this.SUCCESSSTORENAME });
             });
     }
 
     private ngOnInit(): void {
-        // insert a new store item and retrieve it, returning an observable 
-        this.tinyStore.InsertItem({data: 0, name: 'githubUsers' });
-        // map storeObs to automatically return the pertinent data
-        this.storeObs =
-            this.tinyStore.GetItem('githubUsers')
+        this.failObs =
+            this.tinyStore
+                .InsertItem({data: 0, name: this.FAILSTORENAME})
+                .map((s: StoreItem) => s && s.data);
+
+        this.successObs =
+            this.tinyStore
+                .InsertItem({data: 0, name: this.SUCCESSSTORENAME })
                 .map((s: StoreItem) => s && s.data);
     }
 }
