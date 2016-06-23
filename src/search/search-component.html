@@ -1,7 +1,8 @@
 <div>
     <form>
         <input class="searchbox" type="text" #username placeholder="Github Username" id="search_github" />
-        <button type="button" (click)="Search(username.value)">Search</button>
+        <input type="submit" (click)="Search(username.value)" value="Search" />
+        <button type="button" (click)="Reset()">Reset</button>
     </form>
     <div *ngIf="displayUser">
         <a target="_blank" href="{{user.html_url}}">{{user.login}}</a>

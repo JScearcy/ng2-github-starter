@@ -44,12 +44,16 @@ System.register(['@angular/core', '@angular/http', 'tiny-ng-store/tiny-ng-store'
                         .subscribe(function (res) {
                         _this.user = res.json();
                         _this.displayUser = true;
-                        _this.successStore(search_count_1.INCREMENT);
+                        _this.successStoreUpdate(search_count_1.INCREMENT);
                     }, function (err) {
-                        console.error(err);
+                        console.error(err.json().message);
                         _this.displayUser = false;
-                        _this.failStore(search_count_1.INCREMENT);
+                        _this.failStoreUpdate(search_count_1.INCREMENT);
                     });
+                };
+                SearchComponent.prototype.Reset = function () {
+                    this.setStore(0, this.FAILSTORENAME);
+                    this.setStore(0, this.SUCCESSSTORENAME);
                 };
                 Object.defineProperty(SearchComponent.prototype, "SearchCount", {
                     get: function () {
@@ -66,34 +70,33 @@ System.register(['@angular/core', '@angular/http', 'tiny-ng-store/tiny-ng-store'
                     enumerable: true,
                     configurable: true
                 });
-                SearchComponent.prototype.failStore = function (action) {
-                    var _this = this;
-                    this.failObs
-                        .take(1)
-                        .map(function (s) { console.log(s); return search_count_1.searchCount(s, action); })
-                        .subscribe(function (num) {
-                        _this.tinyStore.UpdateItem({ data: num, name: _this.FAILSTORENAME });
-                    });
-                };
-                SearchComponent.prototype.successStore = function (action) {
-                    var _this = this;
-                    // take latest item, apply the value function, and update the data
-                    this.successObs
-                        .take(1)
-                        .map(function (s) { console.log(s); return search_count_1.searchCount(s, action); })
-                        .subscribe(function (num) {
-                        _this.tinyStore.UpdateItem({ data: num, name: _this.SUCCESSSTORENAME });
-                    });
-                };
                 SearchComponent.prototype.ngOnInit = function () {
-                    this.failObs =
-                        this.tinyStore
-                            .InsertItem({ data: 0, name: this.FAILSTORENAME })
-                            .map(function (s) { return s && s.data; });
-                    this.successObs =
-                        this.tinyStore
-                            .InsertItem({ data: 0, name: this.SUCCESSSTORENAME })
-                            .map(function (s) { return s && s.data; });
+                    this.failObs = this.createNumberStore(this.FAILSTORENAME, 0);
+                    this.successObs = this.createNumberStore(this.SUCCESSSTORENAME, 0);
+                };
+                SearchComponent.prototype.failStoreUpdate = function (action) {
+                    this.updateNumberStore(this.FAILSTORENAME, action, this.failObs);
+                };
+                SearchComponent.prototype.successStoreUpdate = function (action) {
+                    // take latest item, apply the value function, and update the data
+                    this.updateNumberStore(this.SUCCESSSTORENAME, action, this.successObs);
+                };
+                SearchComponent.prototype.createNumberStore = function (storeName, initState) {
+                    return this.tinyStore
+                        .InsertItem({ data: initState, name: storeName })
+                        .map(function (s) { return s && s.data; });
+                };
+                SearchComponent.prototype.updateNumberStore = function (storeName, action, obs) {
+                    var _this = this;
+                    obs
+                        .take(1)
+                        .map(function (s) { return search_count_1.searchCount(s, action); })
+                        .subscribe(function (num) {
+                        _this.setStore(num, storeName);
+                    });
+                };
+                SearchComponent.prototype.setStore = function (val, storeName) {
+                    this.tinyStore.UpdateItem({ data: val, name: storeName });
                 };
                 SearchComponent = __decorate([
                     core_1.Component({

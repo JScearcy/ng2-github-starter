@@ -31,14 +31,19 @@ export class SearchComponent {
                 (res: any) => {
                     this.user = res.json();
                     this.displayUser = true;
-                    this.successStore(INCREMENT);
+                    this.successStoreUpdate(INCREMENT);
                 },
                 (err: any) => {
-                    console.error(err);
+                    console.error(err.json().message);
                     this.displayUser = false;
-                    this.failStore(INCREMENT);
+                    this.failStoreUpdate(INCREMENT);
                 }
             );
+    }
+
+    public Reset(): void {
+       this.setStore(0, this.FAILSTORENAME);
+       this.setStore(0, this.SUCCESSSTORENAME);
     }
 
     get SearchCount(): Observable<number> {
@@ -50,34 +55,36 @@ export class SearchComponent {
         return this.failObs;
     }
 
-    private failStore(action: string): void {
-        this.failObs
-            .take(1)
-            .map((s: number) => { console.log(s); return searchCount(s, action); })
-            .subscribe((num: number) => {
-                this.tinyStore.UpdateItem({ data: num, name: this.FAILSTORENAME });
-            });
-    }
-
-    private successStore(action: string): void {
-        // take latest item, apply the value function, and update the data
-        this.successObs
-            .take(1)
-            .map((s: number) => { console.log(s); return searchCount(s, action); })
-            .subscribe((num: number) => {
-                this.tinyStore.UpdateItem({ data: num, name: this.SUCCESSSTORENAME });
-            });
-    }
-
     private ngOnInit(): void {
-        this.failObs =
-            this.tinyStore
-                .InsertItem({data: 0, name: this.FAILSTORENAME})
-                .map((s: StoreItem) => s && s.data);
+        this.failObs = this.createNumberStore(this.FAILSTORENAME, 0);
+        this.successObs = this.createNumberStore(this.SUCCESSSTORENAME, 0);
+    }
 
-        this.successObs =
-            this.tinyStore
-                .InsertItem({data: 0, name: this.SUCCESSSTORENAME })
+    private failStoreUpdate(action: string): void {
+        this.updateNumberStore(this.FAILSTORENAME, action, this.failObs);
+    }
+
+    private successStoreUpdate(action: string): void {
+        // take latest item, apply the value function, and update the data
+        this.updateNumberStore(this.SUCCESSSTORENAME, action, this.successObs);
+    }
+
+    private createNumberStore(storeName: string, initState: number): Observable<number> {
+        return this.tinyStore
+                .InsertItem({data: initState, name: storeName })
                 .map((s: StoreItem) => s && s.data);
+    }
+
+    private updateNumberStore(storeName: string, action: string, obs: Observable<number>): void {
+        obs
+            .take(1)
+            .map((s: number) => searchCount(s, action))
+            .subscribe((num: number) => {
+                this.setStore(num, storeName);
+            });
+    }
+
+    private setStore(val: number, storeName: string): void {
+        this.tinyStore.UpdateItem({ data: val, name: storeName });
     }
 }
