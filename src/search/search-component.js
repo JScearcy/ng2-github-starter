@@ -44,11 +44,11 @@ System.register(['@angular/core', '@angular/http', 'tiny-ng-store/tiny-ng-store'
                         .subscribe(function (res) {
                         _this.user = res.json();
                         _this.displayUser = true;
-                        _this.successStoreUpdate(search_count_1.INCREMENT);
+                        _this.updateNumberStore(_this.SUCCESSSTORENAME, search_count_1.INCREMENT, _this.successObs);
                     }, function (err) {
                         console.error(err.json().message);
                         _this.displayUser = false;
-                        _this.failStoreUpdate(search_count_1.INCREMENT);
+                        _this.updateNumberStore(_this.FAILSTORENAME, search_count_1.INCREMENT, _this.failObs);
                     });
                 };
                 SearchComponent.prototype.Reset = function () {
@@ -71,17 +71,10 @@ System.register(['@angular/core', '@angular/http', 'tiny-ng-store/tiny-ng-store'
                     configurable: true
                 });
                 SearchComponent.prototype.ngOnInit = function () {
-                    this.failObs = this.createNumberStore(this.FAILSTORENAME, 0);
-                    this.successObs = this.createNumberStore(this.SUCCESSSTORENAME, 0);
+                    this.failObs = this.numberStoreFactory(this.FAILSTORENAME, 0);
+                    this.successObs = this.numberStoreFactory(this.SUCCESSSTORENAME, 0);
                 };
-                SearchComponent.prototype.failStoreUpdate = function (action) {
-                    this.updateNumberStore(this.FAILSTORENAME, action, this.failObs);
-                };
-                SearchComponent.prototype.successStoreUpdate = function (action) {
-                    // take latest item, apply the value function, and update the data
-                    this.updateNumberStore(this.SUCCESSSTORENAME, action, this.successObs);
-                };
-                SearchComponent.prototype.createNumberStore = function (storeName, initState) {
+                SearchComponent.prototype.numberStoreFactory = function (storeName, initState) {
                     return this.tinyStore
                         .InsertItem({ data: initState, name: storeName })
                         .map(function (s) { return s && s.data; });

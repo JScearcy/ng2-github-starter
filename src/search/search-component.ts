@@ -31,12 +31,12 @@ export class SearchComponent {
                 (res: any) => {
                     this.user = res.json();
                     this.displayUser = true;
-                    this.successStoreUpdate(INCREMENT);
+                    this.updateNumberStore(this.SUCCESSSTORENAME, INCREMENT, this.successObs);
                 },
                 (err: any) => {
                     console.error(err.json().message);
                     this.displayUser = false;
-                    this.failStoreUpdate(INCREMENT);
+                    this.updateNumberStore(this.FAILSTORENAME, INCREMENT, this.failObs);
                 }
             );
     }
@@ -56,20 +56,11 @@ export class SearchComponent {
     }
 
     private ngOnInit(): void {
-        this.failObs = this.createNumberStore(this.FAILSTORENAME, 0);
-        this.successObs = this.createNumberStore(this.SUCCESSSTORENAME, 0);
+        this.failObs = this.numberStoreFactory(this.FAILSTORENAME, 0);
+        this.successObs = this.numberStoreFactory(this.SUCCESSSTORENAME, 0);
     }
 
-    private failStoreUpdate(action: string): void {
-        this.updateNumberStore(this.FAILSTORENAME, action, this.failObs);
-    }
-
-    private successStoreUpdate(action: string): void {
-        // take latest item, apply the value function, and update the data
-        this.updateNumberStore(this.SUCCESSSTORENAME, action, this.successObs);
-    }
-
-    private createNumberStore(storeName: string, initState: number): Observable<number> {
+    private numberStoreFactory(storeName: string, initState: number): Observable<number> {
         return this.tinyStore
                 .InsertItem({data: initState, name: storeName })
                 .map((s: StoreItem) => s && s.data);

@@ -11,8 +11,7 @@
   var packages = {
     'main':                       { main: 'main.js',  defaultExtension: 'js' },
     'rxjs':                       { defaultExtension: 'js' },
-    'tiny-ng-store':              { defaultExtension: 'min.js' },
-    '@angular/router':            { main: 'index.js', defaultExtension: 'js' }
+    'tiny-ng-store':              { defaultExtension: 'min.js' }
   };
   var ngPackageNames = [
     'common',
