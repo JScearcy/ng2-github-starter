@@ -4,13 +4,15 @@
     'main':                       'src/',
     '@angular':                   'node_modules/@angular',
     'rxjs':                       'node_modules/rxjs',
-    'tiny-ng-store':              'node_modules/tiny-ng-store'
+    'tiny-ng-store':              'node_modules/tiny-ng-store',
+    
   };
   // packages tells the System loader how to load when no filename and/or no extension
   var packages = {
     'main':                       { main: 'main.js',  defaultExtension: 'js' },
     'rxjs':                       { defaultExtension: 'js' },
-    'tiny-ng-store':              { defaultExtension: 'min.js' }
+    'tiny-ng-store':              { defaultExtension: 'min.js' },
+    '@angular/router':            { main: 'index.js', defaultExtension: 'js' }
   };
   var ngPackageNames = [
     'common',
