@@ -42,8 +42,9 @@ export class SearchComponent {
     }
 
     public Reset(): void {
-       this.setStore(0, this.FAILSTORENAME);
-       this.setStore(0, this.SUCCESSSTORENAME);
+        // these are setting each store to 0 again
+        this.setStore(0, this.FAILSTORENAME);
+        this.setStore(0, this.SUCCESSSTORENAME);
     }
 
     get SearchCount(): Observable<number> {
@@ -52,20 +53,23 @@ export class SearchComponent {
     }
 
     get FailCount(): Observable<number> {
+        // the async pipe can be applied to an observable to subscribe and sync with the current value
         return this.failObs;
     }
 
     private ngOnInit(): void {
+        // create two stores to track the fails or successes of a search
         this.failObs = this.numberStoreFactory(this.FAILSTORENAME, 0);
         this.successObs = this.numberStoreFactory(this.SUCCESSSTORENAME, 0);
     }
-
+    // this function will create a new StoreItem, then map the observable returned to utilize only the needed data
     private numberStoreFactory(storeName: string, initState: number): Observable<number> {
         return this.tinyStore
                 .InsertItem({data: initState, name: storeName })
                 .map((s: StoreItem) => s && s.data);
     }
-
+    // this funciton takes an observable, applies a transforming function to the data (searchCount in this case),
+    // and updates the store with the new data
     private updateNumberStore(storeName: string, action: string, obs: Observable<number>): void {
         obs
             .take(1)
@@ -74,7 +78,7 @@ export class SearchComponent {
                 this.setStore(num, storeName);
             });
     }
-
+    // this function takes a store name plus data and updates that store with the new data
     private setStore(val: number, storeName: string): void {
         this.tinyStore.UpdateItem({ data: val, name: storeName });
     }
