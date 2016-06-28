@@ -3,6 +3,11 @@
   "version": "0.0.1",
   "description": "Starter Angular 2 Github query",
   "main": "main.js",
+  "bugs": "https://github.com/JScearcy/ng2-github-starter/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JScearcy/ng2-github-starter.git"
+  },
   "scripts": {
     "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" \"sass --watch ./src/styles/styles.scss:./src/styles/styles.css\"",
     "lite": "lite-server",
@@ -29,7 +34,7 @@
     "rxjs": "5.0.0-beta.6",
     "systemjs": "^0.19.28",
     "tether": "^1.3.2",
-    "tiny-ng-store": "^1.1.1",
+    "tiny-ng-store": "^1.2.0",
     "zone.js": "^0.6.12"
   },
   "devDependencies": {
