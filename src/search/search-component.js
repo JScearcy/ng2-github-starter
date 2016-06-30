@@ -52,6 +52,7 @@ System.register(['@angular/core', '@angular/http', 'tiny-ng-store/tiny-ng-store'
                     });
                 };
                 SearchComponent.prototype.Reset = function () {
+                    // these are setting each store to 0 again
                     this.setStore(0, this.FAILSTORENAME);
                     this.setStore(0, this.SUCCESSSTORENAME);
                 };
@@ -65,20 +66,25 @@ System.register(['@angular/core', '@angular/http', 'tiny-ng-store/tiny-ng-store'
                 });
                 Object.defineProperty(SearchComponent.prototype, "FailCount", {
                     get: function () {
+                        // the async pipe can be applied to an observable to subscribe and sync with the current value
                         return this.failObs;
                     },
                     enumerable: true,
                     configurable: true
                 });
                 SearchComponent.prototype.ngOnInit = function () {
+                    // create two stores to track the fails or successes of a search
                     this.failObs = this.numberStoreFactory(this.FAILSTORENAME, 0);
                     this.successObs = this.numberStoreFactory(this.SUCCESSSTORENAME, 0);
                 };
+                // this function will create a new StoreItem, then map the observable returned to utilize only the needed data
                 SearchComponent.prototype.numberStoreFactory = function (storeName, initState) {
                     return this.tinyStore
                         .InsertItem({ data: initState, name: storeName })
                         .map(function (s) { return s && s.data; });
                 };
+                // this funciton takes an observable, applies a transforming function to the data (searchCount in this case),
+                // and updates the store with the new data
                 SearchComponent.prototype.updateNumberStore = function (storeName, action, obs) {
                     var _this = this;
                     obs
@@ -88,6 +94,7 @@ System.register(['@angular/core', '@angular/http', 'tiny-ng-store/tiny-ng-store'
                         _this.setStore(num, storeName);
                     });
                 };
+                // this function takes a store name plus data and updates that store with the new data
                 SearchComponent.prototype.setStore = function (val, storeName) {
                     this.tinyStore.UpdateItem({ data: val, name: storeName });
                 };
