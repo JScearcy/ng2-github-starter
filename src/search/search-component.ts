@@ -28,7 +28,7 @@ export class SearchComponent {
     public Search(username: string): any {
         this.http.get('https://api.github.com/users/' + username)
             .subscribe(
-                (res: any) => {
+                (res: Response) => {
                     this.user = res.json();
                     this.displayUser = true;
                     this.updateNumberStore(this.SUCCESSSTORENAME, INCREMENT, this.successObs);
