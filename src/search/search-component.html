@@ -12,9 +12,17 @@
         <h3>No User!</h3>
     </div>
     <div>
-        <p>Search Count: {{SearchCount | async}}</p>
+        <p>Search Count: {{ successObs | async }}</p>
     </div>
     <div> 
-        <p>Failure Count: {{FailCount | async}}</p>
+        <p>Failure Count: {{ failObs | async }}</p>
+    </div>
+    <div *ngIf="displayUser">
+        <h3>Followers</h3>
+        <ul> 
+            <li *ngFor="#follower of followers | async">
+                {{ follower.login }}
+            </li>
+        </ul>
     </div>
 </div>

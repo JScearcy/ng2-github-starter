@@ -37,9 +37,11 @@ System.register(['@angular/core', '@angular/http', 'tiny-ng-store/tiny-ng-store'
                     this.displayUser = false;
                     this.FAILSTORENAME = 'gihubUserFail';
                     this.SUCCESSSTORENAME = 'githubUserSuccess';
+                    this.FOLLOWERSSTORENAME = 'followers';
                 }
                 SearchComponent.prototype.Search = function (username) {
                     var _this = this;
+                    this.setStore([], this.FOLLOWERSSTORENAME);
                     this.http.get('https://api.github.com/users/' + username)
                         .subscribe(function (res) {
                         _this.user = res.json();
@@ -55,9 +57,10 @@ System.register(['@angular/core', '@angular/http', 'tiny-ng-store/tiny-ng-store'
                     });
                 };
                 SearchComponent.prototype.GetFollowers = function (followersUrl) {
+                    var _this = this;
                     this.http.get(followersUrl)
                         .subscribe(function (res) {
-                        console.log(res.json());
+                        _this.tinyStore.UpdateItem({ data: res.json(), name: _this.FOLLOWERSSTORENAME });
                     }, function (err) {
                         console.log(err.json().message);
                     });
@@ -67,29 +70,15 @@ System.register(['@angular/core', '@angular/http', 'tiny-ng-store/tiny-ng-store'
                     this.setStore(0, this.FAILSTORENAME);
                     this.setStore(0, this.SUCCESSSTORENAME);
                 };
-                Object.defineProperty(SearchComponent.prototype, "SearchCount", {
-                    get: function () {
-                        // the async pipe can be applied to an observable to subscribe and sync with the current value
-                        return this.successObs;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
-                Object.defineProperty(SearchComponent.prototype, "FailCount", {
-                    get: function () {
-                        // the async pipe can be applied to an observable to subscribe and sync with the current value
-                        return this.failObs;
-                    },
-                    enumerable: true,
-                    configurable: true
-                });
                 SearchComponent.prototype.ngOnInit = function () {
                     // create two stores to track the fails or successes of a search
-                    this.failObs = this.numberStoreFactory(this.FAILSTORENAME, 0);
-                    this.successObs = this.numberStoreFactory(this.SUCCESSSTORENAME, 0);
+                    this.failObs = this.storeFactory(this.FAILSTORENAME, 0);
+                    this.successObs = this.storeFactory(this.SUCCESSSTORENAME, 0);
+                    // create a store to hold a list of followers
+                    this.followers = this.storeFactory(this.FOLLOWERSSTORENAME, []);
                 };
                 // this function will create a new StoreItem, then map the observable returned to utilize only the needed data
-                SearchComponent.prototype.numberStoreFactory = function (storeName, initState) {
+                SearchComponent.prototype.storeFactory = function (storeName, initState) {
                     return this.tinyStore
                         .InsertItem({ data: initState, name: storeName })
                         .map(function (s) { return s && s.data; });

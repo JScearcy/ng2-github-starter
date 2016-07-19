@@ -19,13 +19,16 @@ export class SearchComponent {
     private displayUser: boolean = false;
     private successObs: Observable<number>;
     private failObs: Observable<number>;
+    private followers: Observable<IUser[]>;
     private FAILSTORENAME: string = 'gihubUserFail';
     private SUCCESSSTORENAME: string = 'githubUserSuccess';
+    private FOLLOWERSSTORENAME: string = 'followers';
 
     constructor(private http: Http, private tinyStore: TinyNgStore) {
     }
 
     public Search(username: string): any {
+        this.setStore([], this.FOLLOWERSSTORENAME);
         this.http.get('https://api.github.com/users/' + username)
             .subscribe(
                 (res: Response) => {
@@ -48,7 +51,7 @@ export class SearchComponent {
         this.http.get(followersUrl)
             .subscribe(
                 (res: Response) => {
-                    console.log(res.json());
+                    this.tinyStore.UpdateItem({ data: res.json(), name: this.FOLLOWERSSTORENAME });
                 },
                 (err: any) => {
                     console.log(err.json().message);
@@ -62,23 +65,15 @@ export class SearchComponent {
         this.setStore(0, this.SUCCESSSTORENAME);
     }
 
-    get SearchCount(): Observable<number> {
-        // the async pipe can be applied to an observable to subscribe and sync with the current value
-        return this.successObs;
-    }
-
-    get FailCount(): Observable<number> {
-        // the async pipe can be applied to an observable to subscribe and sync with the current value
-        return this.failObs;
-    }
-
     private ngOnInit(): void {
         // create two stores to track the fails or successes of a search
-        this.failObs = this.numberStoreFactory(this.FAILSTORENAME, 0);
-        this.successObs = this.numberStoreFactory(this.SUCCESSSTORENAME, 0);
+        this.failObs = this.storeFactory(this.FAILSTORENAME, 0);
+        this.successObs = this.storeFactory(this.SUCCESSSTORENAME, 0);
+        // create a store to hold a list of followers
+        this.followers = this.storeFactory(this.FOLLOWERSSTORENAME, []);
     }
     // this function will create a new StoreItem, then map the observable returned to utilize only the needed data
-    private numberStoreFactory(storeName: string, initState: number): Observable<number> {
+    private storeFactory(storeName: string, initState: any): Observable<any> {
         return this.tinyStore
                 .InsertItem({data: initState, name: storeName })
                 .map((s: StoreItem) => s && s.data);
@@ -94,7 +89,7 @@ export class SearchComponent {
             });
     }
     // this function takes a store name plus data and updates that store with the new data
-    private setStore(val: number, storeName: string): void {
+    private setStore(val: any, storeName: string): void {
         this.tinyStore.UpdateItem({ data: val, name: storeName });
     }
 }
