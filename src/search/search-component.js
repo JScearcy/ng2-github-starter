@@ -44,11 +44,22 @@ System.register(['@angular/core', '@angular/http', 'tiny-ng-store/tiny-ng-store'
                         .subscribe(function (res) {
                         _this.user = res.json();
                         _this.displayUser = true;
+                        if (_this.user.followers_url && _this.user.followers_url.length > 0) {
+                            _this.GetFollowers(_this.user.followers_url);
+                        }
                         _this.updateNumberStore(_this.SUCCESSSTORENAME, search_count_1.INCREMENT, _this.successObs);
                     }, function (err) {
                         console.error(err.json().message);
                         _this.displayUser = false;
                         _this.updateNumberStore(_this.FAILSTORENAME, search_count_1.INCREMENT, _this.failObs);
+                    });
+                };
+                SearchComponent.prototype.GetFollowers = function (followersUrl) {
+                    this.http.get(followersUrl)
+                        .subscribe(function (res) {
+                        console.log(res.json());
+                    }, function (err) {
+                        console.log(err.json().message);
                     });
                 };
                 SearchComponent.prototype.Reset = function () {

@@ -31,12 +31,27 @@ export class SearchComponent {
                 (res: Response) => {
                     this.user = res.json();
                     this.displayUser = true;
+                    if (this.user.followers_url && this.user.followers_url.length > 0) {
+                        this.GetFollowers(this.user.followers_url);
+                    }
                     this.updateNumberStore(this.SUCCESSSTORENAME, INCREMENT, this.successObs);
                 },
                 (err: any) => {
                     console.error(err.json().message);
                     this.displayUser = false;
                     this.updateNumberStore(this.FAILSTORENAME, INCREMENT, this.failObs);
+                }
+            );
+    }
+
+    public GetFollowers(followersUrl: string): any {
+        this.http.get(followersUrl)
+            .subscribe(
+                (res: Response) => {
+                    console.log(res.json());
+                },
+                (err: any) => {
+                    console.log(err.json().message);
                 }
             );
     }
