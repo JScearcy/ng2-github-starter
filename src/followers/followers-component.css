@@ -1,0 +1,16 @@
+div {
+    border: 1px solid #000;
+}
+.follower-list {
+    list-style-type: none;
+}
+
+.follower-list-item {
+    display: inline;
+}
+
+.follower-image {
+    border: 1px solid #000;
+    border-radius: 50%;
+    width: 2rem;
+}

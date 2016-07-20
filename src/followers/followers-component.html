@@ -1,0 +1,10 @@
+<div [ngStyle]="{'width': width}">
+    <h3>Followers</h3>
+    <ul class="follower-list"> 
+        <li class="follower-list-item" *ngFor="let follower of followers | async">
+            <a target="_blank" href="{{ follower.html_url }}">
+                <img class="follower-image" src="{{ follower.avatar_url }}" />
+            </a>
+        </li>
+    </ul>
+</div>
