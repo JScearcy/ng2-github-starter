@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/http', 'tiny-ng-store/tiny-ng-store', 'rxjs/add/operator/map', 'rxjs/add/operator/take', 'rxjs/add/operator/reduce', './search-count'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/http', 'tiny-ng-store/tiny-ng-store', 'rxjs/add/operator/map', 'rxjs/add/operator/take', 'rxjs/add/operator/reduce', './search-count', '../const/store-names', '../followers/followers-component', '../pipes/display-user-prop.pipe', '../const/store-helpers'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/http', 'tiny-ng-store/tiny-ng-store'
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, http_1, tiny_ng_store_1, search_count_1;
+    var core_1, http_1, tiny_ng_store_1, search_count_1, store_names_1, followers_component_1, display_user_prop_pipe_1, store_helpers_1;
     var SearchComponent;
     return {
         setters:[
@@ -28,60 +28,52 @@ System.register(['@angular/core', '@angular/http', 'tiny-ng-store/tiny-ng-store'
             function (_3) {},
             function (search_count_1_1) {
                 search_count_1 = search_count_1_1;
+            },
+            function (store_names_1_1) {
+                store_names_1 = store_names_1_1;
+            },
+            function (followers_component_1_1) {
+                followers_component_1 = followers_component_1_1;
+            },
+            function (display_user_prop_pipe_1_1) {
+                display_user_prop_pipe_1 = display_user_prop_pipe_1_1;
+            },
+            function (store_helpers_1_1) {
+                store_helpers_1 = store_helpers_1_1;
             }],
         execute: function() {
             SearchComponent = (function () {
-                function SearchComponent(http, tinyStore) {
+                function SearchComponent(http, tinyStore, storeHelpers) {
                     this.http = http;
                     this.tinyStore = tinyStore;
+                    this.storeHelpers = storeHelpers;
+                    this.displayFollowers = true;
                     this.displayUser = false;
-                    this.FAILSTORENAME = 'gihubUserFail';
-                    this.SUCCESSSTORENAME = 'githubUserSuccess';
-                    this.FOLLOWERSSTORENAME = 'followers';
                 }
                 SearchComponent.prototype.Search = function (username) {
                     var _this = this;
-                    this.setStore([], this.FOLLOWERSSTORENAME);
                     this.http.get('https://api.github.com/users/' + username)
                         .subscribe(function (res) {
-                        _this.user = res.json();
+                        _this.storeHelpers.SetStore(res.json(), store_names_1.CURRENTUSERSTORENAME);
                         _this.displayUser = true;
-                        if (_this.user.followers_url && _this.user.followers_url.length > 0) {
-                            _this.GetFollowers(_this.user.followers_url);
-                        }
-                        _this.updateNumberStore(_this.SUCCESSSTORENAME, search_count_1.INCREMENT, _this.successObs);
+                        _this.user.take(1).subscribe(function (s) { return _this.followersUrl = s.followers_url; });
+                        _this.updateNumberStore(store_names_1.SUCCESSSTORENAME, search_count_1.INCREMENT, _this.successObs);
                     }, function (err) {
                         console.error(err.json().message);
                         _this.displayUser = false;
-                        _this.updateNumberStore(_this.FAILSTORENAME, search_count_1.INCREMENT, _this.failObs);
-                    });
-                };
-                SearchComponent.prototype.GetFollowers = function (followersUrl) {
-                    var _this = this;
-                    this.http.get(followersUrl)
-                        .subscribe(function (res) {
-                        _this.tinyStore.UpdateItem({ data: res.json(), name: _this.FOLLOWERSSTORENAME });
-                    }, function (err) {
-                        console.log(err.json().message);
+                        _this.updateNumberStore(store_names_1.FAILSTORENAME, search_count_1.INCREMENT, _this.failObs);
                     });
                 };
                 SearchComponent.prototype.Reset = function () {
                     // these are setting each store to 0 again
-                    this.setStore(0, this.FAILSTORENAME);
-                    this.setStore(0, this.SUCCESSSTORENAME);
+                    this.storeHelpers.SetStore(0, store_names_1.FAILSTORENAME);
+                    this.storeHelpers.SetStore(0, store_names_1.SUCCESSSTORENAME);
                 };
                 SearchComponent.prototype.ngOnInit = function () {
                     // create two stores to track the fails or successes of a search
-                    this.failObs = this.storeFactory(this.FAILSTORENAME, 0);
-                    this.successObs = this.storeFactory(this.SUCCESSSTORENAME, 0);
-                    // create a store to hold a list of followers
-                    this.followers = this.storeFactory(this.FOLLOWERSSTORENAME, []);
-                };
-                // this function will create a new StoreItem, then map the observable returned to utilize only the needed data
-                SearchComponent.prototype.storeFactory = function (storeName, initState) {
-                    return this.tinyStore
-                        .InsertItem({ data: initState, name: storeName })
-                        .map(function (s) { return s && s.data; });
+                    this.failObs = this.storeHelpers.StoreFactory(store_names_1.FAILSTORENAME, 0);
+                    this.successObs = this.storeHelpers.StoreFactory(store_names_1.SUCCESSSTORENAME, 0);
+                    this.user = this.storeHelpers.StoreFactory(store_names_1.CURRENTUSERSTORENAME, {});
                 };
                 // this funciton takes an observable, applies a transforming function to the data (searchCount in this case),
                 // and updates the store with the new data
@@ -91,21 +83,22 @@ System.register(['@angular/core', '@angular/http', 'tiny-ng-store/tiny-ng-store'
                         .take(1)
                         .map(function (s) { return search_count_1.searchCount(s, action); })
                         .subscribe(function (num) {
-                        _this.setStore(num, storeName);
+                        _this.storeHelpers.SetStore(num, storeName);
                     });
                 };
-                // this function takes a store name plus data and updates that store with the new data
-                SearchComponent.prototype.setStore = function (val, storeName) {
-                    this.tinyStore.UpdateItem({ data: val, name: storeName });
-                };
+                __decorate([
+                    core_1.Input(), 
+                    __metadata('design:type', Boolean)
+                ], SearchComponent.prototype, "displayFollowers", void 0);
                 SearchComponent = __decorate([
                     core_1.Component({
-                        directives: [],
+                        directives: [followers_component_1.Followers],
+                        pipes: [display_user_prop_pipe_1.DisplayUserPropPipe],
                         providers: [],
                         selector: 'gh-search',
                         templateUrl: 'src/search/search-component.html',
                     }), 
-                    __metadata('design:paramtypes', [http_1.Http, tiny_ng_store_1.TinyNgStore])
+                    __metadata('design:paramtypes', [http_1.Http, tiny_ng_store_1.TinyNgStore, store_helpers_1.StoreHelpers])
                 ], SearchComponent);
                 return SearchComponent;
             }());

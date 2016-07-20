@@ -5,8 +5,9 @@
         <button type="button" (click)="Reset()">Reset</button>
     </form>
     <div *ngIf="displayUser">
-        <a target="_blank" href="{{user.html_url}}">{{user.login}}</a>
-        <img src="{{user.avatar_url}}" />
+        <a target="_blank" href="{{ user | displayUserProp: 'html_url' }}">
+            <img class="user-image" src="{{ user | displayUserProp: 'avatar_url' }}" />
+        </a>
     </div>
     <div *ngIf="!displayUser">
         <h3>No User!</h3>
@@ -17,12 +18,7 @@
     <div> 
         <p>Failure Count: {{ failObs | async }}</p>
     </div>
-    <div *ngIf="displayUser">
-        <h3>Followers</h3>
-        <ul> 
-            <li *ngFor="#follower of followers | async">
-                {{ follower.login }}
-            </li>
-        </ul>
+    <div *ngIf="displayUser && displayFollowers">
+        <gh-followers [followersUrl]="followersUrl" width="50%"></gh-followers>
     </div>
 </div>
