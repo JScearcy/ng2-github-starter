@@ -1,9 +1,13 @@
-<div>
-    <div *ngIf="displaySearch === 'true'">
+<div [ngStyle]="{'width': width}">
+    <div class="search-container" *ngIf="displaySearch === 'true'">
         <form>
-            <input class="searchbox" type="text" #username placeholder="Github Username" id="search_github" />
-            <input type="submit" (click)="Search(username.value)" value="Search" />
-            <button type="button" (click)="Reset()">Reset</button>
+            <div>
+                <input class="searchbox" type="text" #username placeholder="Github Username" id="search_github" />
+            </div>
+            <div class="padding">
+                <input class="gh-btn" type="submit" (click)="Search(username.value)" value="Search" />
+                <button class="gh-btn" type="button" (click)="Reset()">Reset</button>
+            </div>
         </form>
         <div *ngIf="displayUser">
             <a target="_blank" href="{{ user | displayUserProp: 'html_url' }}">
@@ -13,10 +17,10 @@
         <div *ngIf="!displayUser">
             <h3>No User!</h3>
         </div>
-        <div>
+        <div *ngIf="searchCount === 'true'">
             <p>Search Count: {{ successObs | async }}</p>
         </div>
-        <div> 
+        <div *ngIf="failCount === 'true'"> 
             <p>Failure Count: {{ failObs | async }}</p>
         </div>
     </div>

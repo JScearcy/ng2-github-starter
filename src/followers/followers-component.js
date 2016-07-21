@@ -31,7 +31,6 @@ System.register(['@angular/core', '@angular/http', '../const/store-helpers', '..
                 function Followers(http, storeHelpers) {
                     this.http = http;
                     this.storeHelpers = storeHelpers;
-                    this.width = '100%';
                 }
                 Object.defineProperty(Followers.prototype, "followersUrl", {
                     get: function () {
@@ -64,10 +63,6 @@ System.register(['@angular/core', '@angular/http', '../const/store-helpers', '..
                     __metadata('design:type', String), 
                     __metadata('design:paramtypes', [String])
                 ], Followers.prototype, "followersUrl", null);
-                __decorate([
-                    core_1.Input(), 
-                    __metadata('design:type', String)
-                ], Followers.prototype, "width", void 0);
                 Followers = __decorate([
                     core_1.Component({
                         directives: [],

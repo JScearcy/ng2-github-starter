@@ -17,11 +17,15 @@ import {StoreHelpers} from '../const/store-helpers';
     pipes: [DisplayUserPropPipe],
     providers: [],
     selector: 'gh-search',
+    styleUrls: ['src/search/search-component.css'],
     templateUrl: 'src/search/search-component.html',
 })
 export class SearchComponent {
     @Input() displayFollowers: string = 'false';
     @Input() displaySearch: string = 'true';
+    @Input() width: string = '100%';
+    @Input() searchCount = 'false';
+    @Input() failCount = 'false';
 
     private user: Observable<IUser>;
     private displayUser: boolean = false;

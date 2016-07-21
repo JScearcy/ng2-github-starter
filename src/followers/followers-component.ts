@@ -21,7 +21,6 @@ export class Followers {
          get followersUrl () {
              return this._followersUrl;
          }
-    @Input() width: string = '100%';
     private followers: Observable<IUser[]>;
     private _followersUrl: string;
 

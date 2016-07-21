@@ -2,7 +2,10 @@ input.searchbox {
   color: darkblue; }
 
 img.user-image {
-    width: 6em;
-    border: 1px solid #000; }
+  width: 6em;
+  border: 1px solid #000; }
+
+.gh-btn {
+  border-radius: 5px; }
 
 /*# sourceMappingURL=styles.css.map */

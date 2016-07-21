@@ -49,6 +49,9 @@ System.register(['@angular/core', '@angular/http', 'tiny-ng-store/tiny-ng-store'
                     this.storeHelpers = storeHelpers;
                     this.displayFollowers = 'false';
                     this.displaySearch = 'true';
+                    this.width = '100%';
+                    this.searchCount = 'false';
+                    this.failCount = 'false';
                     this.displayUser = false;
                 }
                 SearchComponent.prototype.Search = function (username) {
@@ -95,12 +98,25 @@ System.register(['@angular/core', '@angular/http', 'tiny-ng-store/tiny-ng-store'
                     core_1.Input(), 
                     __metadata('design:type', String)
                 ], SearchComponent.prototype, "displaySearch", void 0);
+                __decorate([
+                    core_1.Input(), 
+                    __metadata('design:type', String)
+                ], SearchComponent.prototype, "width", void 0);
+                __decorate([
+                    core_1.Input(), 
+                    __metadata('design:type', Object)
+                ], SearchComponent.prototype, "searchCount", void 0);
+                __decorate([
+                    core_1.Input(), 
+                    __metadata('design:type', Object)
+                ], SearchComponent.prototype, "failCount", void 0);
                 SearchComponent = __decorate([
                     core_1.Component({
                         directives: [followers_component_1.Followers],
                         pipes: [display_user_prop_pipe_1.DisplayUserPropPipe],
                         providers: [],
                         selector: 'gh-search',
+                        styleUrls: ['src/search/search-component.css'],
                         templateUrl: 'src/search/search-component.html',
                     }), 
                     __metadata('design:paramtypes', [http_1.Http, tiny_ng_store_1.TinyNgStore, store_helpers_1.StoreHelpers])
