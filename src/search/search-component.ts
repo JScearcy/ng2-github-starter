@@ -20,7 +20,9 @@ import {StoreHelpers} from '../const/store-helpers';
     templateUrl: 'src/search/search-component.html',
 })
 export class SearchComponent {
-    @Input() displayFollowers: boolean = true;
+    @Input() displayFollowers: string = 'false';
+    @Input() displaySearch: string = 'true';
+
     private user: Observable<IUser>;
     private displayUser: boolean = false;
     private successObs: Observable<number>;

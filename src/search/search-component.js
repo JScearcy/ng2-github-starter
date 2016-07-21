@@ -47,7 +47,8 @@ System.register(['@angular/core', '@angular/http', 'tiny-ng-store/tiny-ng-store'
                     this.http = http;
                     this.tinyStore = tinyStore;
                     this.storeHelpers = storeHelpers;
-                    this.displayFollowers = true;
+                    this.displayFollowers = 'false';
+                    this.displaySearch = 'true';
                     this.displayUser = false;
                 }
                 SearchComponent.prototype.Search = function (username) {
@@ -88,8 +89,12 @@ System.register(['@angular/core', '@angular/http', 'tiny-ng-store/tiny-ng-store'
                 };
                 __decorate([
                     core_1.Input(), 
-                    __metadata('design:type', Boolean)
+                    __metadata('design:type', String)
                 ], SearchComponent.prototype, "displayFollowers", void 0);
+                __decorate([
+                    core_1.Input(), 
+                    __metadata('design:type', String)
+                ], SearchComponent.prototype, "displaySearch", void 0);
                 SearchComponent = __decorate([
                     core_1.Component({
                         directives: [followers_component_1.Followers],
