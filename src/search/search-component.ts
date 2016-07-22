@@ -1,6 +1,5 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {Http, Response} from '@angular/http';
-import {TinyNgStore} from 'tiny-ng-store/tiny-ng-store';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/take';
@@ -33,7 +32,7 @@ export class SearchComponent {
     private failObs: Observable<number>;
     private followersUrl: string;
 
-    constructor(private http: Http, private tinyStore: TinyNgStore, private storeHelpers: StoreHelpers) {
+    constructor(private http: Http, private storeHelpers: StoreHelpers) {
     }
 
     public Search(username: string): any {
@@ -41,14 +40,15 @@ export class SearchComponent {
             .subscribe(
                 (res: Response) => {
                     this.storeHelpers.SetStore(res.json(), CURRENTUSERSTORENAME);
-                    this.displayUser = true;
                     this.user.take(1).subscribe((s: IUser) => this.followersUrl = s.followers_url);
+                    this.displayUser = true;
                     this.updateNumberStore(SUCCESSSTORENAME, INCREMENT, this.successObs);
                 },
                 (err: any) => {
                     console.error(err.json().message);
                     this.displayUser = false;
                     this.updateNumberStore(FAILSTORENAME, INCREMENT, this.failObs);
+                    this.storeHelpers.SetStore({}, CURRENTUSERSTORENAME);
                 }
             );
     }

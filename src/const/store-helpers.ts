@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { TinyNgStore, StoreItem } from 'tiny-ng-store/tiny-ng-store';
-import {Observable} from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
 @Injectable()

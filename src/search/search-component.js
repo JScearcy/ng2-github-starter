@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/http', 'tiny-ng-store/tiny-ng-store', 'rxjs/add/operator/map', 'rxjs/add/operator/take', 'rxjs/add/operator/reduce', './search-count', '../const/store-names', '../followers/followers-component', '../pipes/display-user-prop.pipe', '../const/store-helpers'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/http', 'rxjs/add/operator/map', 'rxjs/add/operator/take', 'rxjs/add/operator/reduce', './search-count', '../const/store-names', '../followers/followers-component', '../pipes/display-user-prop.pipe', '../const/store-helpers'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/http', 'tiny-ng-store/tiny-ng-store'
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, http_1, tiny_ng_store_1, search_count_1, store_names_1, followers_component_1, display_user_prop_pipe_1, store_helpers_1;
+    var core_1, http_1, search_count_1, store_names_1, followers_component_1, display_user_prop_pipe_1, store_helpers_1;
     var SearchComponent;
     return {
         setters:[
@@ -19,9 +19,6 @@ System.register(['@angular/core', '@angular/http', 'tiny-ng-store/tiny-ng-store'
             },
             function (http_1_1) {
                 http_1 = http_1_1;
-            },
-            function (tiny_ng_store_1_1) {
-                tiny_ng_store_1 = tiny_ng_store_1_1;
             },
             function (_1) {},
             function (_2) {},
@@ -43,9 +40,8 @@ System.register(['@angular/core', '@angular/http', 'tiny-ng-store/tiny-ng-store'
             }],
         execute: function() {
             SearchComponent = (function () {
-                function SearchComponent(http, tinyStore, storeHelpers) {
+                function SearchComponent(http, storeHelpers) {
                     this.http = http;
-                    this.tinyStore = tinyStore;
                     this.storeHelpers = storeHelpers;
                     this.displayFollowers = 'false';
                     this.displaySearch = 'true';
@@ -59,13 +55,14 @@ System.register(['@angular/core', '@angular/http', 'tiny-ng-store/tiny-ng-store'
                     this.http.get('https://api.github.com/users/' + username)
                         .subscribe(function (res) {
                         _this.storeHelpers.SetStore(res.json(), store_names_1.CURRENTUSERSTORENAME);
-                        _this.displayUser = true;
                         _this.user.take(1).subscribe(function (s) { return _this.followersUrl = s.followers_url; });
+                        _this.displayUser = true;
                         _this.updateNumberStore(store_names_1.SUCCESSSTORENAME, search_count_1.INCREMENT, _this.successObs);
                     }, function (err) {
                         console.error(err.json().message);
                         _this.displayUser = false;
                         _this.updateNumberStore(store_names_1.FAILSTORENAME, search_count_1.INCREMENT, _this.failObs);
+                        _this.storeHelpers.SetStore({}, store_names_1.CURRENTUSERSTORENAME);
                     });
                 };
                 SearchComponent.prototype.Reset = function () {
@@ -119,7 +116,7 @@ System.register(['@angular/core', '@angular/http', 'tiny-ng-store/tiny-ng-store'
                         styleUrls: ['src/search/search-component.css'],
                         templateUrl: 'src/search/search-component.html',
                     }), 
-                    __metadata('design:paramtypes', [http_1.Http, tiny_ng_store_1.TinyNgStore, store_helpers_1.StoreHelpers])
+                    __metadata('design:paramtypes', [http_1.Http, store_helpers_1.StoreHelpers])
                 ], SearchComponent);
                 return SearchComponent;
             }());
