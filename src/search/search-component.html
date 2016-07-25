@@ -27,4 +27,7 @@
     <div *ngIf="displayUser && displayFollowers === 'true'">
         <gh-followers [followersUrl]="followersUrl" width="25%"></gh-followers>
     </div>
+    <div *ngIf="displayUser && displayFollowing === 'true'">
+        <gh-following [followingUrl]="followingUrl" width="25%"></gh-following>
+    </div>
 </div>

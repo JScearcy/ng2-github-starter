@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/http', 'rxjs/add/operator/map', 'rxjs/add/operator/take', 'rxjs/add/operator/reduce', './search-count', '../const/store-names', '../followers/followers-component', '../pipes/display-user-prop.pipe', '../const/store-helpers'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/http', 'rxjs/add/operator/map', 'rxjs/add/operator/take', 'rxjs/add/operator/reduce', './search-count', '../const/store-names', '../followers/followers-component', '../following/following-component', '../pipes/display-user-prop.pipe', '../const/store-helpers'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/http', 'rxjs/add/operator/map', 'rxj
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, http_1, search_count_1, store_names_1, followers_component_1, display_user_prop_pipe_1, store_helpers_1;
+    var core_1, http_1, search_count_1, store_names_1, followers_component_1, following_component_1, display_user_prop_pipe_1, store_helpers_1;
     var SearchComponent;
     return {
         setters:[
@@ -32,6 +32,9 @@ System.register(['@angular/core', '@angular/http', 'rxjs/add/operator/map', 'rxj
             function (followers_component_1_1) {
                 followers_component_1 = followers_component_1_1;
             },
+            function (following_component_1_1) {
+                following_component_1 = following_component_1_1;
+            },
             function (display_user_prop_pipe_1_1) {
                 display_user_prop_pipe_1 = display_user_prop_pipe_1_1;
             },
@@ -44,6 +47,7 @@ System.register(['@angular/core', '@angular/http', 'rxjs/add/operator/map', 'rxj
                     this.http = http;
                     this.storeHelpers = storeHelpers;
                     this.displayFollowers = 'false';
+                    this.displayFollowing = 'false';
                     this.displaySearch = 'true';
                     this.width = '100%';
                     this.searchCount = 'false';
@@ -55,7 +59,11 @@ System.register(['@angular/core', '@angular/http', 'rxjs/add/operator/map', 'rxj
                     this.http.get('https://api.github.com/users/' + username)
                         .subscribe(function (res) {
                         _this.storeHelpers.SetStore(res.json(), store_names_1.CURRENTUSERSTORENAME);
-                        _this.user.take(1).subscribe(function (s) { return _this.followersUrl = s.followers_url; });
+                        _this.user.take(1).subscribe(function (s) {
+                            console.log(s);
+                            _this.followersUrl = s.followers_url;
+                            _this.followingUrl = s.following_url;
+                        });
                         _this.displayUser = true;
                         _this.updateNumberStore(store_names_1.SUCCESSSTORENAME, search_count_1.INCREMENT, _this.successObs);
                     }, function (err) {
@@ -94,6 +102,10 @@ System.register(['@angular/core', '@angular/http', 'rxjs/add/operator/map', 'rxj
                 __decorate([
                     core_1.Input(), 
                     __metadata('design:type', String)
+                ], SearchComponent.prototype, "displayFollowing", void 0);
+                __decorate([
+                    core_1.Input(), 
+                    __metadata('design:type', String)
                 ], SearchComponent.prototype, "displaySearch", void 0);
                 __decorate([
                     core_1.Input(), 
@@ -109,7 +121,7 @@ System.register(['@angular/core', '@angular/http', 'rxjs/add/operator/map', 'rxj
                 ], SearchComponent.prototype, "failCount", void 0);
                 SearchComponent = __decorate([
                     core_1.Component({
-                        directives: [followers_component_1.Followers],
+                        directives: [followers_component_1.Followers, following_component_1.Following],
                         pipes: [display_user_prop_pipe_1.DisplayUserPropPipe],
                         providers: [],
                         selector: 'gh-search',

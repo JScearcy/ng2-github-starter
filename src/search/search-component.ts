@@ -8,11 +8,12 @@ import {IUser} from '../models/github-user.model';
 import {searchCount, INCREMENT} from './search-count';
 import {SUCCESSSTORENAME, FAILSTORENAME, CURRENTUSERSTORENAME} from '../const/store-names';
 import {Followers} from '../followers/followers-component';
+import {Following} from '../following/following-component';
 import {DisplayUserPropPipe} from '../pipes/display-user-prop.pipe';
 import {StoreHelpers} from '../const/store-helpers';
 
 @Component({
-    directives: [Followers],
+    directives: [Followers, Following],
     pipes: [DisplayUserPropPipe],
     providers: [],
     selector: 'gh-search',
@@ -21,6 +22,7 @@ import {StoreHelpers} from '../const/store-helpers';
 })
 export class SearchComponent {
     @Input() displayFollowers: string = 'false';
+    @Input() displayFollowing: string = 'false';
     @Input() displaySearch: string = 'true';
     @Input() width: string = '100%';
     @Input() searchCount = 'false';
@@ -31,6 +33,7 @@ export class SearchComponent {
     private successObs: Observable<number>;
     private failObs: Observable<number>;
     private followersUrl: string;
+    private followingUrl: string;
 
     constructor(private http: Http, private storeHelpers: StoreHelpers) {
     }
@@ -40,7 +43,11 @@ export class SearchComponent {
             .subscribe(
                 (res: Response) => {
                     this.storeHelpers.SetStore(res.json(), CURRENTUSERSTORENAME);
-                    this.user.take(1).subscribe((s: IUser) => this.followersUrl = s.followers_url);
+                    this.user.take(1).subscribe((s: IUser) => {
+                        console.log(s);
+                        this.followersUrl = s.followers_url;
+                        this.followingUrl = s.following_url;
+                    });
                     this.displayUser = true;
                     this.updateNumberStore(SUCCESSSTORENAME, INCREMENT, this.successObs);
                 },

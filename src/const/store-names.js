@@ -1,7 +1,7 @@
 System.register([], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
-    var FAILSTORENAME, SUCCESSSTORENAME, FOLLOWERSSTORENAME, CURRENTUSERSTORENAME;
+    var FAILSTORENAME, SUCCESSSTORENAME, FOLLOWERSSTORENAME, CURRENTUSERSTORENAME, FOLLOWINGSTORENAME;
     return {
         setters:[],
         execute: function() {
@@ -9,6 +9,7 @@ System.register([], function(exports_1, context_1) {
             exports_1("SUCCESSSTORENAME", SUCCESSSTORENAME = 'githubUserSuccess');
             exports_1("FOLLOWERSSTORENAME", FOLLOWERSSTORENAME = 'followers');
             exports_1("CURRENTUSERSTORENAME", CURRENTUSERSTORENAME = 'currentUser');
+            exports_1("FOLLOWINGSTORENAME", FOLLOWINGSTORENAME = 'following');
         }
     }
 });
