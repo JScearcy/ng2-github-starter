@@ -31,7 +31,6 @@ export class Following {
         this.http.get(followingUrl)
             .subscribe(
                 (res: Response) => {
-                    console.log(res.json());
                     this.storeHelpers.SetStore(res.json(), FOLLOWINGSTORENAME);
                 },
                 (err: any) => {
