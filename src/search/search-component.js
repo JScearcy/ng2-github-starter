@@ -60,9 +60,8 @@ System.register(['@angular/core', '@angular/http', 'rxjs/add/operator/map', 'rxj
                         .subscribe(function (res) {
                         _this.storeHelpers.SetStore(res.json(), store_names_1.CURRENTUSERSTORENAME);
                         _this.user.take(1).subscribe(function (s) {
-                            console.log(s);
                             _this.followersUrl = s.followers_url;
-                            _this.followingUrl = s.following_url;
+                            _this.followingUrl = s.following_url.replace(/{\/other_user}/, '');
                         });
                         _this.displayUser = true;
                         _this.updateNumberStore(store_names_1.SUCCESSSTORENAME, search_count_1.INCREMENT, _this.successObs);

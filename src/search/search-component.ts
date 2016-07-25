@@ -44,9 +44,8 @@ export class SearchComponent {
                 (res: Response) => {
                     this.storeHelpers.SetStore(res.json(), CURRENTUSERSTORENAME);
                     this.user.take(1).subscribe((s: IUser) => {
-                        console.log(s);
                         this.followersUrl = s.followers_url;
-                        this.followingUrl = s.following_url;
+                        this.followingUrl = s.following_url.replace(/{\/other_user}/, '');
                     });
                     this.displayUser = true;
                     this.updateNumberStore(SUCCESSSTORENAME, INCREMENT, this.successObs);

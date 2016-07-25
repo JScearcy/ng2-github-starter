@@ -1,0 +1,24 @@
+div.following-container {
+    border: 1px solid #000;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.following-list {
+    list-style-type: none;
+    padding: 5px;
+}
+
+.following-list-item {
+    display: inline;
+}
+
+.following-list-item a {
+    text-decoration: none;
+}
+
+.following-image {
+    border: 1px solid #000;
+    border-radius: 50%;
+    width: 2rem;
+}
