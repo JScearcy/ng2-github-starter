@@ -25,9 +25,12 @@
         </div>
     </div>
     <div *ngIf="displayUser && displayFollowers === 'true'">
-        <gh-followers [followersUrl]="followersUrl" width="25%"></gh-followers>
+        <gh-followers [followersUrl]="followersUrl"></gh-followers>
     </div>
     <div *ngIf="displayUser && displayFollowing === 'true'">
-        <gh-following [followingUrl]="followingUrl" width="25%"></gh-following>
+        <gh-following [followingUrl]="followingUrl"></gh-following>
+    </div>
+    <div *ngIf="displayUser && displayGists === 'true'">
+        <gh-gists [gistsUrl]="gistsUrl"></gh-gists>
     </div>
 </div>

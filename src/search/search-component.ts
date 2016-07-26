@@ -9,11 +9,12 @@ import {searchCount, INCREMENT} from './search-count';
 import {SUCCESSSTORENAME, FAILSTORENAME, CURRENTUSERSTORENAME} from '../const/store-names';
 import {Followers} from '../followers/followers-component';
 import {Following} from '../following/following-component';
+import {GistsComponent} from '../gists/gists-component';
 import {DisplayUserPropPipe} from '../pipes/display-user-prop.pipe';
 import {StoreHelpers} from '../const/store-helpers';
 
 @Component({
-    directives: [Followers, Following],
+    directives: [Followers, Following, GistsComponent],
     pipes: [DisplayUserPropPipe],
     providers: [],
     selector: 'gh-search',
@@ -23,6 +24,7 @@ import {StoreHelpers} from '../const/store-helpers';
 export class SearchComponent {
     @Input() displayFollowers: string = 'false';
     @Input() displayFollowing: string = 'false';
+    @Input() displayGists: string = 'false';
     @Input() displaySearch: string = 'true';
     @Input() width: string = '100%';
     @Input() searchCount = 'false';
@@ -34,6 +36,7 @@ export class SearchComponent {
     private failObs: Observable<number>;
     private followersUrl: string;
     private followingUrl: string;
+    private gistsUrl: string;
 
     constructor(private http: Http, private storeHelpers: StoreHelpers) {
     }
@@ -46,6 +49,7 @@ export class SearchComponent {
                     this.user.take(1).subscribe((s: IUser) => {
                         this.followersUrl = s.followers_url;
                         this.followingUrl = s.following_url.replace(/{\/other_user}/, '');
+                        this.gistsUrl = s.gists_url.replace(/{\/gist_id}/, '');
                     });
                     this.displayUser = true;
                     this.updateNumberStore(SUCCESSSTORENAME, INCREMENT, this.successObs);
