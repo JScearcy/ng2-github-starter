@@ -2,6 +2,7 @@ import {Component, OnInit, Input} from '@angular/core';
 import {Http, Response} from '@angular/http';
 import {StoreHelpers} from '../const/store-helpers';
 import {GISTSSTORENAME} from '../const/store-names';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
     selector: 'gh-gists',
@@ -18,6 +19,7 @@ export class GistsComponent {
              return this._gistsUrl;
          }
     private _gistsUrl: string;
+    private gists: Observable<any>;
 
     constructor(private http: Http, private storeHelpers: StoreHelpers) {};
 
@@ -34,6 +36,6 @@ export class GistsComponent {
     }
 
     private ngOnInit() {
-        this.storeHelpers.StoreFactory(GISTSSTORENAME, []);
+        this.gists = this.storeHelpers.StoreFactory(GISTSSTORENAME, []);
     }
 }

@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/http', '../const/store-helpers'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/http', '../const/store-helpers', '../const/store-names'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/http', '../const/store-helpers'], fu
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, http_1, store_helpers_1;
+    var core_1, http_1, store_helpers_1, store_names_1;
     var GistsComponent;
     return {
         setters:[
@@ -22,6 +22,9 @@ System.register(['@angular/core', '@angular/http', '../const/store-helpers'], fu
             },
             function (store_helpers_1_1) {
                 store_helpers_1 = store_helpers_1_1;
+            },
+            function (store_names_1_1) {
+                store_names_1 = store_names_1_1;
             }],
         execute: function() {
             GistsComponent = (function () {
@@ -46,11 +49,16 @@ System.register(['@angular/core', '@angular/http', '../const/store-helpers'], fu
                 });
                 ;
                 GistsComponent.prototype.GetGists = function (gistsUrl) {
+                    var _this = this;
                     this.http.get(gistsUrl).subscribe(function (res) {
                         console.log(res.json());
+                        _this.storeHelpers.SetStore(res.json(), store_names_1.GISTSSTORENAME);
                     }, function (err) {
                         console.error(err);
                     });
+                };
+                GistsComponent.prototype.ngOnInit = function () {
+                    this.gists = this.storeHelpers.StoreFactory(store_names_1.GISTSSTORENAME, []);
                 };
                 __decorate([
                     core_1.Input(), 
@@ -59,7 +67,7 @@ System.register(['@angular/core', '@angular/http', '../const/store-helpers'], fu
                 ], GistsComponent.prototype, "gistsUrl", null);
                 GistsComponent = __decorate([
                     core_1.Component({
-                        selector: "gh-gists",
+                        selector: 'gh-gists',
                         styleUrls: ['src/gists/gists-component.css'],
                         templateUrl: 'src/gists/gists-component.html',
                     }), 
