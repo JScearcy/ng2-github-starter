@@ -2,7 +2,7 @@
     <h3>Gists</h3>
     <ul class="gists-list"> 
         <li class="gists-list-item" *ngFor="let gist of gists | async">
-            <a target="_blank" href="{{ gist.html_url }}">{{ gist.description }}</a>
+            <a target="_blank" href="{{ gist.html_url }}">{{ gist | description }}</a>
         </li>
     </ul>
 </div>

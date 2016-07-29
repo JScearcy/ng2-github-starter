@@ -3,8 +3,10 @@ import {Http, Response} from '@angular/http';
 import {StoreHelpers} from '../const/store-helpers';
 import {GISTSSTORENAME} from '../const/store-names';
 import {Observable} from 'rxjs/Observable';
+import {DescriptionPickerPipe} from '../pipes/description-picker.pipe';
 
 @Component({
+    pipes: [DescriptionPickerPipe],
     selector: 'gh-gists',
     styleUrls: ['src/gists/gists-component.css'],
     templateUrl: 'src/gists/gists-component.html',
