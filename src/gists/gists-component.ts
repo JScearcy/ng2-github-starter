@@ -25,7 +25,7 @@ export class GistsComponent {
 
     constructor(private http: Http, private storeHelpers: StoreHelpers) {};
 
-    public GetGists(gistsUrl: string) {
+    public GetGists(gistsUrl: string): void {
         this.http.get(gistsUrl).subscribe(
             (res: Response) => {
                 console.log(res.json());

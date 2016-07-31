@@ -1,0 +1,20 @@
+div.gists-container {
+    border: 1px solid #000;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.gists-list {
+    text-align: initial;
+    margin: 50px
+    padding: 5px;
+}
+
+.gists-list-item {
+}
+
+.gists-list-item a {
+}
+
+.gists-image {
+}
