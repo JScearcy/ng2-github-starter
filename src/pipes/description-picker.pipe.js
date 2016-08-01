@@ -23,13 +23,13 @@ System.register(['@angular/core'], function(exports_1, context_1) {
                 }
                 DescriptionPickerPipe.prototype.transform = function (value) {
                     var description = 'No Description';
-                    if (value.description.length) {
+                    if (value.description && value.description.length) {
                         description = value.description;
                     }
                     else if (value.files) {
                         description = 'Files: ';
                         for (var file in value.files) {
-                            if (file.length) {
+                            if (file && file.length) {
                                 description += file + '; ';
                             }
                         }

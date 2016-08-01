@@ -54,7 +54,6 @@ System.register(['@angular/core', '@angular/http', '../const/store-helpers', '..
                 GistsComponent.prototype.GetGists = function (gistsUrl) {
                     var _this = this;
                     this.http.get(gistsUrl).subscribe(function (res) {
-                        console.log(res.json());
                         _this.storeHelpers.SetStore(res.json(), store_names_1.GISTSSTORENAME);
                     }, function (err) {
                         console.error(err);

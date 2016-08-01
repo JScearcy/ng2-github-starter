@@ -28,7 +28,6 @@ export class GistsComponent {
     public GetGists(gistsUrl: string): void {
         this.http.get(gistsUrl).subscribe(
             (res: Response) => {
-                console.log(res.json());
                 this.storeHelpers.SetStore(res.json(), GISTSSTORENAME);
             },
             (err: any) => {
