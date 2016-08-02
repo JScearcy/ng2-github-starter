@@ -2,11 +2,13 @@
     <div class="search-container" *ngIf="displaySearch === 'true'">
         <form>
             <div>
-                <input class="searchbox" type="text" #username placeholder="Github Username" id="search_github" />
+                <ngl-form-element class="slds-m-top--small">
+                    <input class="searchbox" type="text" #username placeholder="Github Username" id="search_github" />
+                </ngl-form-element>         
             </div>
             <div class="padding">
-                <input class="gh-btn" type="submit" (click)="Search(username.value)" value="Search" />
-                <button class="gh-btn" type="button" (click)="Reset()">Reset</button>
+                <input type="submit" nglButton="neutral" (click)="Search(username.value)" value="Search" />
+                <button type="button" nglButton="neutral" (click)="Reset()">Reset</button>
             </div>
         </form>
         <div *ngIf="displayUser">
@@ -17,11 +19,13 @@
         <div *ngIf="!displayUser">
             <h3>No User!</h3>
         </div>
-        <div *ngIf="searchCount === 'true'">
-            <p>Search Count: {{ successObs | async }}</p>
+        <div class="padding" *ngIf="searchCount === 'true'">
+            <ngl-badge type="success">Success</ngl-badge>
+            <span> {{ successObs | async }}</span>
         </div>
-        <div *ngIf="failCount === 'true'"> 
-            <p>Failure Count: {{ failObs | async }}</p>
+        <div class="padding" *ngIf="failCount === 'true'"> 
+            <ngl-badge type="error">Error</ngl-badge>
+            <span>{{ failObs | async }}</span>
         </div>
     </div>
     <div *ngIf="displayUser && displayFollowers === 'true'">

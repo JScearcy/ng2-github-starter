@@ -12,9 +12,10 @@ import {Following} from '../following/following-component';
 import {GistsComponent} from '../gists/gists-component';
 import {DisplayUserPropPipe} from '../pipes/display-user-prop.pipe';
 import {StoreHelpers} from '../const/store-helpers';
+import {NGL_DIRECTIVES} from 'ng-lightning/ng-lightning';
 
 @Component({
-    directives: [Followers, Following, GistsComponent],
+    directives: [Followers, Following, GistsComponent, NGL_DIRECTIVES],
     pipes: [DisplayUserPropPipe],
     providers: [],
     selector: 'gh-search',
