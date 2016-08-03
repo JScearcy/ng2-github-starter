@@ -3,7 +3,7 @@
     <ul class="following-list"> 
         <li class="following-list-item" *ngFor="let follow of following | async">
             <a target="_blank" href="{{ follow.html_url }}">
-                <img class="following-image" src="{{ follow.avatar_url }}" title="{{ follow.login }}" alt="{{ follow.login }}"/>
+                <ngl-avatar src="{{ follow.avatar_url }}" size="small" type="circle" title="{{ follow.login }}" alt="{{ follow.login }}"></ngl-avatar>
             </a>
         </li>
     </ul>

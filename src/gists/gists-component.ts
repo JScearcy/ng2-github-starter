@@ -4,8 +4,10 @@ import {StoreHelpers} from '../const/store-helpers';
 import {GISTSSTORENAME} from '../const/store-names';
 import {Observable} from 'rxjs/Observable';
 import {DescriptionPickerPipe} from '../pipes/description-picker.pipe';
+import {NGL_DIRECTIVES} from 'ng-lightning/ng-lightning';
 
 @Component({
+    directives: [NGL_DIRECTIVES],
     pipes: [DescriptionPickerPipe],
     selector: 'gh-gists',
     styleUrls: ['src/gists/gists-component.css'],

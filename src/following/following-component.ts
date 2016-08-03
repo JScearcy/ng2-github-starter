@@ -4,9 +4,10 @@ import {IUser} from '../models/github-user.model';
 import {StoreHelpers} from '../const/store-helpers';
 import {FOLLOWINGSTORENAME} from '../const/store-names';
 import {Observable} from 'rxjs/Observable';
+import {NGL_DIRECTIVES} from 'ng-lightning/ng-lightning';
 
 @Component({
-    directives: [],
+    directives: [NGL_DIRECTIVES],
     providers: [],
     selector: 'gh-following',
     styleUrls: ['src/following/following-component.css'],

@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/http', '../const/store-helpers', '../const/store-names'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/http', '../const/store-helpers', '../const/store-names', 'ng-lightning/ng-lightning'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/http', '../const/store-helpers', '..
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, http_1, store_helpers_1, store_names_1;
+    var core_1, http_1, store_helpers_1, store_names_1, ng_lightning_1;
     var Followers;
     return {
         setters:[
@@ -25,6 +25,9 @@ System.register(['@angular/core', '@angular/http', '../const/store-helpers', '..
             },
             function (store_names_1_1) {
                 store_names_1 = store_names_1_1;
+            },
+            function (ng_lightning_1_1) {
+                ng_lightning_1 = ng_lightning_1_1;
             }],
         execute: function() {
             Followers = (function () {
@@ -65,7 +68,7 @@ System.register(['@angular/core', '@angular/http', '../const/store-helpers', '..
                 ], Followers.prototype, "followersUrl", null);
                 Followers = __decorate([
                     core_1.Component({
-                        directives: [],
+                        directives: [ng_lightning_1.NGL_DIRECTIVES],
                         providers: [],
                         selector: 'gh-followers',
                         styleUrls: ['src/followers/followers-component.css'],

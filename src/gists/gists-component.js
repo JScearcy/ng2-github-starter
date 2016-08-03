@@ -1,4 +1,4 @@
-System.register(['@angular/core', '@angular/http', '../const/store-helpers', '../const/store-names', '../pipes/description-picker.pipe'], function(exports_1, context_1) {
+System.register(['@angular/core', '@angular/http', '../const/store-helpers', '../const/store-names', '../pipes/description-picker.pipe', 'ng-lightning/ng-lightning'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['@angular/core', '@angular/http', '../const/store-helpers', '..
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, http_1, store_helpers_1, store_names_1, description_picker_pipe_1;
+    var core_1, http_1, store_helpers_1, store_names_1, description_picker_pipe_1, ng_lightning_1;
     var GistsComponent;
     return {
         setters:[
@@ -28,6 +28,9 @@ System.register(['@angular/core', '@angular/http', '../const/store-helpers', '..
             },
             function (description_picker_pipe_1_1) {
                 description_picker_pipe_1 = description_picker_pipe_1_1;
+            },
+            function (ng_lightning_1_1) {
+                ng_lightning_1 = ng_lightning_1_1;
             }],
         execute: function() {
             GistsComponent = (function () {
@@ -69,6 +72,7 @@ System.register(['@angular/core', '@angular/http', '../const/store-helpers', '..
                 ], GistsComponent.prototype, "gistsUrl", null);
                 GistsComponent = __decorate([
                     core_1.Component({
+                        directives: [ng_lightning_1.NGL_DIRECTIVES],
                         pipes: [description_picker_pipe_1.DescriptionPickerPipe],
                         selector: 'gh-gists',
                         styleUrls: ['src/gists/gists-component.css'],
